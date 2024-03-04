@@ -12,8 +12,10 @@ containerlab destroy DC1.yaml
 After deploying the lab, the nodes will be accessible. To access a network element, simply use its hostname as described in the table displayed after execution of the deploy command.
 
 ssh admin@IP
+
 telnet IP 5000 (Also for SROS)
-cred : admin/N0kia@123$ (SROS) admin/NokiaSrl1!(SRL)
+
+credentails : admin/N0kia@123$ (SROS) admin/NokiaSrl1!(SRL)
 
 ## The Linux CE clients don't have SSH enabled. In order to access them, use `docker exec`.**
 
