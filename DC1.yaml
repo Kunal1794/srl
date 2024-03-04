@@ -1,0 +1,101 @@
+name: DC1
+
+topology:
+  kinds:
+    srl:
+      image: ghcr.io/nokia/srlinux:latest
+    vr-sros:
+      image: registry.srlinux.dev/pub/vr-sros:22.10.R3 # internal image, external users should build/use their own image
+      license: ./license_sr.key # license file must be obtained from Nokia
+    linux:
+      image: ghcr.io/hellt/network-multitool
+
+  nodes:
+    dcgw1:
+      kind: vr-sros
+      type: sr-1
+      startup-config: ./configs/dcgw1.cfg
+
+    dcgw2:
+      kind: vr-sros
+      type: sr-1
+      startup-config: ./configs/dcgw2.cfg
+
+    spine1:
+      kind: srl
+      type: ixrd3l
+      startup-config: ./configs/spine1.cfg
+
+    spine2:
+      kind: srl
+      type: ixrd3l
+      startup-config: ./configs/spine2.cfg
+
+    leaf1:
+      kind: srl
+      type: ixrd3l
+      startup-config: ./configs/leaf1.cfg
+
+    leaf2:
+      kind: srl
+      type: ixrd3l
+      startup-config: ./configs/leaf2.cfg
+
+    leaf3:
+      kind: srl
+      type: ixrd2l
+      startup-config: ./configs/leaf3.cfg
+
+    leaf4:
+      kind: srl
+      type: ixrd2l
+      startup-config: ./configs/leaf4.cfg
+
+    client1:
+      kind: linux
+      binds:
+        - ./configs/eth1.sh:/tmp/eth1.sh
+      exec:
+        - bash /tmp/eth1.sh
+        - ip addr add 192.168.1.10/24 dev bond0.1
+        - ip addr add 10.201.11.10/24 dev bond1.1
+        - ip route add 10.202.11.0/24 via 10.201.11.1 dev bond1.1
+        - ip route add 100.100.100.100/32 via 10.201.11.1 dev bond1.1
+        - ip route add 200.200.200.200/32 via 10.201.11.1 dev bond1.1
+  
+    client2:
+      kind: linux
+      binds:
+        - ./configs/eth1.sh:/tmp/eth1.sh
+      exec:
+        - bash /tmp/eth1.sh
+        - ip addr add 192.168.1.20/24 dev bond0.1
+        - ip addr add 10.202.11.20/24 dev bond1.1
+        - ip route add 10.201.11.0/24 via 10.202.11.1 dev bond1.1
+        - ip route add 100.100.100.100/32 via 10.202.11.1 dev bond1.1
+        - ip route add 200.200.200.200/32 via 10.202.11.1 dev bond1.1
+
+  links:
+    - endpoints: ["dcgw1:eth1", "spine1:e1-31"]
+    - endpoints: ["dcgw1:eth2", "spine2:e1-31"]
+    - endpoints: ["dcgw2:eth1", "spine1:e1-32"]
+    - endpoints: ["dcgw2:eth2", "spine2:e1-32"]
+
+    - endpoints: ["spine1:e1-11", "leaf1:e1-31"]
+    - endpoints: ["spine1:e1-12", "leaf2:e1-31"]
+    - endpoints: ["spine1:e1-13", "leaf3:e1-51"]
+    - endpoints: ["spine1:e1-14", "leaf4:e1-51"]
+
+    - endpoints: ["spine2:e1-11", "leaf1:e1-32"]
+    - endpoints: ["spine2:e1-12", "leaf2:e1-32"]
+    - endpoints: ["spine2:e1-13", "leaf3:e1-52"]
+    - endpoints: ["spine2:e1-14", "leaf4:e1-52"]
+
+    - endpoints: ["leaf1:e1-1", "client1:eth1"]
+    - endpoints: ["leaf2:e1-1", "client1:eth2"]
+    - endpoints: ["leaf3:e1-1", "client2:eth1"]
+    - endpoints: ["leaf4:e1-1", "client2:eth2"]
+    - endpoints: ["leaf1:e1-2", "client1:eth3"]
+    - endpoints: ["leaf2:e1-2", "client1:eth4"]
+    - endpoints: ["leaf3:e1-2", "client2:eth3"]
+    - endpoints: ["leaf4:e1-2", "client2:eth4"]
