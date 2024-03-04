@@ -13,7 +13,7 @@ After deploying the lab, the nodes will be accessible. To access a network eleme
 
 ssh admin@IP
 telnet IP 5000 (Also for SROS)
-cred : admin/admin (SROS) admin/NokiaSrl1!(SRL)
+cred : admin/N0kia@123$ (SROS) admin/NokiaSrl1!(SRL)
 
 ## The Linux CE clients don't have SSH enabled. In order to access them, use `docker exec`.**
 
