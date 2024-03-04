@@ -2,10 +2,10 @@
 
 ![image](https://github.com/Kunal1794/srl/assets/54974430/70226a36-ed39-4c8d-afce-d2e1f3d33082)
 
-## deploy the lab
+## Deploy the lab
 containerlab deploy DC1.yaml
 
-## destroy the lab
+## Destroy the lab
 containerlab destroy DC1.yaml
 
 ## Accessing the network elements
@@ -25,7 +25,6 @@ All nodes come preconfigured thanks to startup-config setting in the topology fi
 ## L2 EVPN Topology
 
 ![image](https://github.com/Kunal1794/srl/assets/54974430/f1e8d44f-97f8-466d-ae2b-f5d8df98bac8)
-
 
 ## L3 EVPN Topology
 
