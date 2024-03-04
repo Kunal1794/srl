@@ -1,7 +1,6 @@
-Physical Topology
+**##Physical Topology**
 
 ![image](https://github.com/Kunal1794/srl/assets/54974430/70226a36-ed39-4c8d-afce-d2e1f3d33082)
-
 
 ## deploy the lab
 containerlab deploy DC1.yaml
@@ -12,7 +11,9 @@ containerlab destroy DC1.yaml
 ## Accessing the network elements
 After deploying the lab, the nodes will be accessible. To access a network element, simply use its hostname as described in the table displayed after execution of the deploy command.
 
-ssh admin@<ip>
+ssh admin@IP
+telnet IP 5000 (Also for SROS)
+cred : admin/admin (SROS) admin/NokiaSrl1!(SRL)
 
 ## The Linux CE clients don't have SSH enabled. In order to access them, use `docker exec`.**
 
